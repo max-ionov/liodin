@@ -1,0 +1,29 @@
+.home-container {
+  width: 100%;
+  display: flex;
+  padding: var(--dl-space-space-twounits);
+  overflow: auto;
+  min-height: 100vh;
+  align-items: center;
+  flex-direction: column;
+}
+.home-container1 {
+  flex: 0 0 auto;
+  width: 100%;
+  display: flex;
+  padding: var(--dl-space-space-unit);
+  align-items: center;
+  justify-content: center;
+}
+.home-text {
+  font-family: "Exo 2";
+}
+.home-container2 {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  padding: var(--dl-space-space-unit);
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+}
