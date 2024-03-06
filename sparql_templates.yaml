@@ -1,0 +1,39 @@
+bilingual:
+  bindings:
+    - word1
+    - word2
+  body: |
+    PREFIX ontolex: <http://www.w3.org/ns/lemon/ontolex#>
+    PREFIX vartrans: <http://www.w3.org/ns/lemon/vartrans#>
+    PREFIX decomp: <http://www.w3.org/ns/lemon/decomp#>
+    PREFIX lexinfo: <http://www.lexinfo.net/ontology/2.0/lexinfo#>
+    PREFIX dbnary: <http://kaiko.getalp.org/dbnary#>
+    
+    SELECT ?word ?transl (LANG(?word) AS ?entry_lang) (LANG(?transl) AS ?res_lang)
+    WHERE {{  
+      GRAPH ?g {{
+        ?entry1 a ontolex:LexicalEntry ;
+                (ontolex:lexicalForm|ontolex:canonicalForm|ontolex:otherForm)/ontolex:writtenRep ?word .
+        ?sense1 ontolex:isSenseOf|^ontolex:sense ?entry1 .
+        
+        OPTIONAL {{
+          ?tr vartrans:source ?sense1 ;
+              vartrans:target ?sense2 .
+          
+          ?sense2 ontolex:isSenseOf|^ontolex:sense ?entry2 .
+          ?entry2 a ontolex:LexicalEntry ;
+                  (ontolex:lexicalForm|ontolex:canonicalForm|ontolex:otherForm)/ontolex:writtenRep ?transl .
+        }}
+        
+        OPTIONAL {{
+          ?tr2 dbnary:isTranslationOf ?sense1 ;
+             dbnary:writtenForm ?transl .
+        }}
+        {filter}
+      }}
+    }} LIMIT 100
+  filters:
+    - "FILTER(STR(?word) = '{word}')"
+    - "FILTER(?word = '{word}'@{entry_lang})"
+    - "FILTER(STR(?word) = '{word}' && LANG(?transl) = '{result_lang}')"
+    - "FILTER(?word = '{word}'@{entry_lang} && LANG(?transl) = '{result_lang}')"

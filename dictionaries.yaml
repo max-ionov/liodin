@@ -1,0 +1,6 @@
+dictionaries:
+  - name: acoli-dict
+    format_: rdf
+    location: http://sparql.ionov.me/liodin
+    available_formats:
+      - bilingual
