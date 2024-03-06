@@ -1,7 +1,4 @@
 bilingual:
-  bindings:
-    - word1
-    - word2
   body: |
     PREFIX ontolex: <http://www.w3.org/ns/lemon/ontolex#>
     PREFIX vartrans: <http://www.w3.org/ns/lemon/vartrans#>
