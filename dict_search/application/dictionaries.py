@@ -1,6 +1,7 @@
+import asyncio
 from typing import List
 
-from .datamodels import WordQueryParams, DictEntry
+from .datamodels import WordQueryParams, SearchResult
 from .interfaces import Dictionary, SparqlTemplateService, SparqlExecutor
 
 
@@ -15,8 +16,12 @@ class RDFDictionary(Dictionary):
         self.sparql_template_service = sparql_template_service
         self.sparql_executor = sparql_executor
 
-    def search(self, query_params: WordQueryParams, dict_entry_type: str) -> List[DictEntry]:
+    async def search(self, query_params: WordQueryParams, dict_entry_type: str) -> SearchResult:
+        print(f'searching in {self.name}')
         sparql_templ = self.sparql_template_service.get_filled_template(dict_entry_type, query_params)
-        return self.sparql_executor.execute_query(self.location, sparql_templ, dict_entry_type)
+        dict_entries = await asyncio.create_task(self.sparql_executor.execute_query(self.location, sparql_templ, dict_entry_type))
+        result = SearchResult(dict_name=self.name,
+                              dict_entries=dict_entries)
+        return result
 
 

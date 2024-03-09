@@ -1,9 +1,10 @@
+import asyncio
 from dataclasses import asdict
 from typing import Optional, List
 
 import yaml
 
-from .datamodels import WordQueryParams, DictConfig, SearchParams, SearchResult
+from .datamodels import WordQueryParams, DictConfig, SearchParams, SearchResult, DictQueryParams
 from .interfaces import DictionaryService, Dictionary, SparqlTemplateService, DictionaryRepository
 from .sparql_executor import SPARQLWrapperExecutor, RDFlibExecutor
 from .dictionaries import RDFDictionary
@@ -42,18 +43,14 @@ class DictionarySearchService:
     def __init__(self, dictionary_repo: DictionaryRepository):
         self.dictionary_repo = dictionary_repo
 
-    def search(self, search_params: SearchParams) -> List[SearchResult]:
-        results = []
-
+    def create_search_tasks(self, search_params: SearchParams) -> List[asyncio.Task]:
+        tasks = []
         # Search in pre-defined dictionaries
         for name in search_params.dict_info.dicts:
             dictionary = self.dictionary_repo.find_dictionary_by_name(name)
             if dictionary:
                 dict_entry_type = dictionary.available_formats[0]
-                search_res = dictionary.search(search_params.word_info, dict_entry_type)
-                result = SearchResult(dict_name=dictionary.name,
-                                      dict_entries=search_res)
-                results.append(result)
+                tasks.append(asyncio.create_task(dictionary.search(search_params.word_info, dict_entry_type)))
 
         # Search in user-provided dictionaries
         if search_params.dict_info.endpoints:
@@ -62,9 +59,12 @@ class DictionarySearchService:
                 user_dict = self.dictionary_repo.dict_service.create_dictionary(user_dict_config)
                 if user_dict:
                     dict_entry_type = user_dict.available_formats[0]
-                    result = SearchResult(dict_name=user_dict.name,
-                                          dict_entries=user_dict.search(search_params.word_info, dict_entry_type))
-                    results.append(result)
+                    tasks.append(asyncio.create_task(user_dict.search(search_params.word_info, dict_entry_type)))
+        return tasks
+
+    async def search(self, search_params: SearchParams) -> List[SearchResult]:
+        search_tasks = self.create_search_tasks(search_params)
+        results = await asyncio.gather(*search_tasks)
         return results
 
 
@@ -124,7 +124,6 @@ class LazySparqlTemplateService(SparqlTemplateService):
     def fill_template(self, template: dict, query_params: WordQueryParams) -> str:
         query = asdict(query_params)
         params = {p: v for p, v in query.items() if v}
-        print(params)
         if 'entry_lang' in params:
             params['entry_lang'] = [el for el in params['entry_lang']][0]
             if 'result_lang' in params:

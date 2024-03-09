@@ -1,3 +1,4 @@
+import asyncio
 from io import StringIO
 from typing import List
 
@@ -9,16 +10,18 @@ from .interfaces import SparqlExecutor
 
 
 class SPARQLWrapperExecutor(SparqlExecutor):
-    def execute_query(self, location: str, sparql_query: str, dict_entry_type: str) -> List[DictEntry]:
+
+    async def execute_query(self, location: str, sparql_query: str, dict_entry_type: str) -> List[DictEntry]:
+        print(f'Executing in {location}')
         sparql = SPARQLWrapper(location)
         sparql.setReturnFormat(CSV)
-        print(sparql_query)
         sparql.setQuery(sparql_query)
         try:
-            ret = sparql.queryAndConvert()
+            ret = await asyncio.create_task(asyncio.to_thread(sparql.queryAndConvert))
             return self.format_converter(ret, dict_entry_type)
         except Exception as e:
             # TODO: вот это бы нормально сделать
+            print(e)
             return [DictEntry(lexical_entry='there was some error')]
 
     def _to_bilingual(self, res) -> List[TranslationalDictEntry]:

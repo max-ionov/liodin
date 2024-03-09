@@ -39,7 +39,7 @@ class AnnotatedSearchParams(SearchParams):
             else:
                 dicts = set()
         else:
-            dicts = set(el.value for el in DictName)
+            dicts = set(el.value for el in d)
         super().__init__(dict_info=DictQueryParams(dicts, endpoints),
                          word_info=WordQueryParams(w, entry_lang, res_lang))
 
@@ -51,8 +51,7 @@ async def home(request: Request):
 
 @app.get("/api/search/")
 async def search(search_params: Annotated[AnnotatedSearchParams, Depends(AnnotatedSearchParams)]):
-
-    return search_service.search(search_params)
+    return await search_service.search(search_params)
 
 
 @app.get("/api/dict")

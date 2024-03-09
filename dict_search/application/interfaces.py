@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional, Dict
 
-from .datamodels import WordQueryParams, DictEntry, DictConfig
+from .datamodels import WordQueryParams, DictEntry, DictConfig, SearchResult
 
 
 class SparqlTemplateService(ABC):
@@ -12,7 +12,7 @@ class SparqlTemplateService(ABC):
 
 class SparqlExecutor(ABC):
     @abstractmethod
-    def execute_query(self, location: str, sparql_query: str, dict_entry_type: str) -> List[DictEntry]:
+    async def execute_query(self, location: str, sparql_query: str, dict_entry_type: str) -> List[DictEntry]:
         pass
 
 
@@ -23,7 +23,7 @@ class Dictionary(ABC):
         self.available_formats = available_formats  # for ex: translational, explanatory, etc
 
     @abstractmethod
-    def search(self, query_params: WordQueryParams, dict_entry_type: str) -> List[DictEntry]:
+    async def search(self, query_params: WordQueryParams, dict_entry_type: str) -> SearchResult:
         pass
 
 
