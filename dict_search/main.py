@@ -50,13 +50,27 @@ async def home(request: Request):
 
 
 @app.get("/api/search/")
-async def search(search_params: Annotated[AnnotatedSearchParams, Depends(AnnotatedSearchParams)]):
+async def api_search(search_params: Annotated[AnnotatedSearchParams, Depends(AnnotatedSearchParams)]):
     return await search_service.search(search_params)
 
 
+@app.get("/search", response_class=HTMLResponse, include_in_schema=False)
+async def search(request: Request, search_params: Annotated[AnnotatedSearchParams, Depends(AnnotatedSearchParams)]):
+    results = await search_service.search(search_params)
+    # TODO: реализовать заполнение шаблонов результатами поиска
+    return templates.TemplateResponse(request=request, name="search.html", context={"word": search_params.word_info.word})
+
+
 @app.get("/api/dict")
-async def dict_list():
+async def api_dict_list():
     return dictionary_repo.get_all_dict_names()
+
+
+@app.get("/dict", response_class=HTMLResponse, include_in_schema=False)
+async def dict_list():
+    dict_info = dictionary_repo.get_all_dict_names()  # здесь возможно мы захотим доставать еще какую-то метаинформацию, а не только названия
+    # TODO: реализовать заполнение шаблонов информацией о словарях
+    return
 
 
 @app.get("/api/dict/{dict_name}")

@@ -34,6 +34,7 @@ class DictionaryServiceImpl(DictionaryService):
             raise ValueError('Unknown dictionary format')
 
     def define_dict_entry_format(self, config: DictConfig) -> List[str]:
+        # TODO: реализовать определения типа словарной статьи, которую можно извлекать из словаря
         if config.available_formats:
             return config.available_formats
         return ['bilingual']
@@ -109,7 +110,7 @@ WHERE {
 
 
 class LazySparqlTemplateService(SparqlTemplateService):
-    # TODO: нужно здесь что-то нормальное сделать
+    # TODO: нормально реализовать работу со спаркл шаблонами - придумать как хранить/заполнять
     def __init__(self, templates_path: str):
         with open(templates_path, 'r') as f:
             self.templates = yaml.safe_load(f)
