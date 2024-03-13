@@ -9,7 +9,7 @@ from fastapi.templating import Jinja2Templates
 from .application.services import DictionaryServiceImpl, DictionarySearchService, LazySparqlTemplateService
 from .application.interfaces import DictionaryRepository
 from .application.utils import load_dictionaries_config
-from .application.datamodels import SearchParams, DictQueryParams, WordQueryParams
+from .application.datamodels import SearchParams, DictQueryParams, WordQueryParams, SearchResult
 
 
 app = FastAPI()
@@ -50,7 +50,8 @@ async def home(request: Request):
 
 
 @app.get("/api/search/")
-async def api_search(search_params: Annotated[AnnotatedSearchParams, Depends(AnnotatedSearchParams)]):
+async def api_search(search_params: Annotated[AnnotatedSearchParams, Depends(AnnotatedSearchParams)]
+                     ) -> List[SearchResult]:
     return await search_service.search(search_params)
 
 
