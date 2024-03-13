@@ -16,6 +16,7 @@ pip install -r requirements.txt
 ```shell
 uvicorn dict_search.main:app
 ```
+Чтобы открыть документацию апи и попробовать там запросы надо перейти по эндпойнту /docs
 
 4. (если используете virtual environment)
 ```shell
