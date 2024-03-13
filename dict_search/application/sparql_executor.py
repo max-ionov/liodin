@@ -5,7 +5,7 @@ from typing import List
 from SPARQLWrapper import SPARQLWrapper, CSV
 import pandas as pd
 
-from .datamodels import DictEntry, TranslationalDictEntry
+from .datamodels import DictEntry, TranslationalDictEntry, LexicalEntry
 from .interfaces import SparqlExecutor
 
 
@@ -32,7 +32,8 @@ class SPARQLWrapperExecutor(SparqlExecutor):
             for j, gr2 in gr.groupby('res_lang'):
                 translations[j] = gr2.transl.tolist()
             if i[0] and i[1] and translations:
-                entry = TranslationalDictEntry(lexical_entry=i[0], entry_lang=i[1], translations=translations)
+                lexical_entry = LexicalEntry(text=i[0], lang=i[1])
+                entry = TranslationalDictEntry(lexical_entry=lexical_entry, translations=translations)
             else:
                 continue
             dict_entries.append(entry)

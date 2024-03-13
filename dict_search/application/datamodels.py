@@ -32,14 +32,18 @@ class SearchParams:
     word_info: WordQueryParams
 
 
+class LexicalEntry(BaseModel):
+    text: str
+    lang: str
+
+
 class DictEntry(BaseModel):
-    lexical_entry: str
+    lexical_entry: LexicalEntry
 
 
 # here should be pydantic application inherited from DictEntry for different dictionary types - explanatory, bilingual etc.
 # TODO: добавить другие типы словарных статей и (возможно) поменять структуру словарной статьи переводного словаря
 class TranslationalDictEntry(DictEntry):
-    entry_lang: str
     translations: Dict[str, List[str]]
 
 
