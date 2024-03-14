@@ -12,7 +12,7 @@ class SparqlTemplateService(ABC):
 
 class SparqlExecutor(ABC):
     @abstractmethod
-    async def execute_query(self, location: str, sparql_query: str, dict_entry_type: str) -> List[DictEntry]:
+    async def execute_query(self, location: str, sparql_query: str, dict_entry_type: str) -> Optional[List[DictEntry]]:
         pass
 
 
