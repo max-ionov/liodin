@@ -65,7 +65,7 @@ async def search(request: Request, search_params: Annotated[AnnotatedSearchParam
 @app.get("/test/search", response_class=HTMLResponse, include_in_schema=False)
 async def search(request: Request):
     # относительный (от папки templates) путь до твоего шаблона ---v
-    return templates.TemplateResponse(request=request, name="search.html")
+    return templates.TemplateResponse(request=request, name="results1.html")
 
 
 @app.get("/api/dict")
