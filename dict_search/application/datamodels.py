@@ -43,11 +43,11 @@ class DictEntry(BaseModel):
 
 # here should be pydantic application inherited from DictEntry for different dictionary types - explanatory, bilingual etc.
 # TODO: добавить другие типы словарных статей и (возможно) поменять структуру словарной статьи переводного словаря
-class TranslationalDictEntry(DictEntry):
-    translations: Dict[str, List[str]]
+class TranslationalDictEntry(DictEntry):  # тк наследуется от DictEntry имеет все его поля
+    translations: Dict[str, List[str]]  # {язык перевода: [перевод1, перевод2, ...]
 
 
 # TODO: возможно добавить инфу, что если что-то пошло не так?
 class SearchResult(BaseModel):
-    dict_name: str
-    dict_entries: List[Union[DictEntry, TranslationalDictEntry]]
+    dict_name: str  # название словаря
+    dict_entries: List[Union[DictEntry, TranslationalDictEntry]]  # [словарнаяСтатья1, словарнаяСтатья2, ...]
