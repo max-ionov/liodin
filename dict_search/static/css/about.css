@@ -6,15 +6,6 @@
   align-items: center;
   flex-direction: column;
 }
-.page9-header {
-  width: 100%;
-  display: flex;
-  z-index: 100;
-  position: fixed;
-  align-items: center;
-  flex-direction: column;
-  background-color: var(--dl-color-gray-white);
-}
 .page9-logo {
   width: var(--dl-size-size-large);
   font-size: 2em;
@@ -139,23 +130,27 @@
   width: var(--dl-size-size-xsmall);
   height: var(--dl-size-size-xsmall);
 }
-.page9-info {
-  flex: 0 0 auto;
+.page9-body {
+  flex: 1;
   width: 100%;
-  height: auto;
+  height: 910px;
   display: flex;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
 }
-.page9-info-container {
-  height: 849px;
+.page9-results-container {
+  flex: 1;
+  height: 100%;
   align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
 }
-.page9-guidelines {
+.page9-results {
   gap: var(--dl-space-space-twounits);
+  flex: 1;
   width: 100%;
-  height: 661px;
+  height: 100%;
   display: flex;
   position: relative;
   max-width: var(--dl-size-size-maxwidth);
@@ -165,11 +160,26 @@
   padding-right: var(--dl-space-space-threeunits);
   flex-direction: column;
   padding-bottom: var(--dl-space-space-fourunits);
+}
+.page9-text {
+  align-self: flex-start;
+}
+.page9-dict-container {
+  flex: 0;
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
   justify-content: flex-start;
 }
 .page9-text1 {
-  width: 100%;
   font-size: 20px;
+}
+.page9-text3 {
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
 }
 @media(max-width: 767px) {
   .page9-navbar-interactive {
@@ -196,7 +206,7 @@
   .page9-nav421 {
     margin-bottom: var(--dl-space-space-unit);
   }
-  .page9-guidelines {
+  .page9-results {
     flex-direction: column;
   }
 }
