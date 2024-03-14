@@ -77,12 +77,16 @@ class LazySparqlTemplateService(SparqlTemplateService):
 
     def get_filled_template(self, template_name: str, query_params: WordQueryParams) -> str:
         template = self.get_template(template_name)
-        return self.fill_template(template, query_params)
+        if template_name == 'bilingual':
+            return self.fill_bilingual_template(template, query_params)
+        elif template_name == 'explanatory':
+            # TODO: (аня) написать заполнение шаблона для запроса к толковому словарю
+            ...
 
     def get_template(self, template_name: str) -> dict:
         return self.templates[template_name]
 
-    def fill_template(self, template: dict, query_params: WordQueryParams) -> str:
+    def fill_bilingual_template(self, template: dict, query_params: WordQueryParams) -> str:
         query = asdict(query_params)
         params = {p: v for p, v in query.items() if v}
         if 'entry_lang' in params:

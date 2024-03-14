@@ -3,7 +3,6 @@ from typing import List, Optional, Dict, Set, Union
 from pydantic import BaseModel
 
 
-# user query application
 @dataclass
 class WordQueryParams:
     word: str
@@ -25,7 +24,6 @@ class DictConfig:
     available_formats: Optional[List[str]] = field(default_factory=list)
 
 
-# search results application
 @dataclass
 class SearchParams:
     dict_info: DictQueryParams
@@ -41,13 +39,19 @@ class DictEntry(BaseModel):
     lexical_entry: LexicalEntry
 
 
-# here should be pydantic application inherited from DictEntry for different dictionary types - explanatory, bilingual etc.
-# TODO: добавить другие типы словарных статей и (возможно) поменять структуру словарной статьи переводного словаря
 class TranslationalDictEntry(DictEntry):  # тк наследуется от DictEntry имеет все его поля
     translations: Dict[str, List[str]]  # {язык перевода: [перевод1, перевод2, ...]
 
 
-# TODO: возможно добавить инфу, что если что-то пошло не так?
+class ExplanatoryDictEntry(DictEntry):
+    # TODO: (аня) добавить структуру словарной статьи
+    ...
+
+
 class SearchResult(BaseModel):
     dict_name: str  # название словаря
-    dict_entries: List[Union[DictEntry, TranslationalDictEntry]]  # [словарнаяСтатья1, словарнаяСтатья2, ...]
+    dict_entries: Optional[List[Union[
+        DictEntry,
+        TranslationalDictEntry,
+        ExplanatoryDictEntry
+    ]]]  # [словарнаяСтатья1, словарнаяСтатья2, ...]
