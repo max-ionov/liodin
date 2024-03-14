@@ -10,6 +10,7 @@ from .application.services import DictionaryServiceImpl, DictionarySearchService
 from .application.interfaces import DictionaryRepository
 from .application.utils import load_dictionaries_config
 from .application.datamodels import SearchParams, DictQueryParams, WordQueryParams, SearchResult
+from .application.mock import mock_results
 
 
 app = FastAPI()
@@ -55,10 +56,16 @@ async def api_search(search_params: Annotated[AnnotatedSearchParams, Depends(Ann
     return await search_service.search(search_params)
 
 
-@app.get("/search", response_class=HTMLResponse, include_in_schema=False)
+@app.get("/search", response_class=HTMLResponse)
 async def search(request: Request, search_params: Annotated[AnnotatedSearchParams, Depends(AnnotatedSearchParams)]):
-    results = await search_service.search(search_params)
+    # results = await search_service.search(search_params)
     # TODO: реализовать заполнение шаблонов результатами поиска
+    print(mock_results)
+    # все структуры данных прописаны в datamodels.py
+    # results = [SearchResult]
+    # полезные функции: templates.get_template(template_name) -> returned_template
+    # returned_template.render(*args, **kwargs) - рендерит шаблон - заполняет переменными
+    # чтобы тестироваться, пока не подключена форма: http://127.0.0.1:8000/search?w=anything 
     return templates.TemplateResponse(request=request, name="search.html", context={"word": search_params.word_info.word})
 
 
