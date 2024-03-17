@@ -85,6 +85,21 @@ async def dict_list():
     return
 
 
+@app.get('/about', response_class=HTMLResponse, include_in_schema=False)
+async def about(request: Request):
+    return templates.TemplateResponse(request=request, name='about.html')
+
+
+@app.get('/team', response_class=HTMLResponse, include_in_schema=False)
+async def team(request: Request):
+    return templates.TemplateResponse(request=request, name='team.html')
+
+
+@app.get('/guidelines', response_class=HTMLResponse, include_in_schema=False)
+async def guidelines(request: Request):
+    return templates.TemplateResponse(request=request, name='guidelines.html')
+
+
 @app.get("/api/dict/{dict_name}")
 async def dict(dict_name: DictName, w: str = None):
     # сделала через query, а не path, потому что тогда были бы проблемы, когда мы ищем слово "search" (пути совпали бы)
