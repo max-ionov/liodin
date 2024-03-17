@@ -5,6 +5,7 @@ from fastapi import FastAPI, Request, Depends, Query
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from iso639 import iter_langs
 
 from .application.services import DictionaryServiceImpl, DictionarySearchService, LazySparqlTemplateService
 from .application.interfaces import DictionaryRepository
@@ -24,6 +25,7 @@ dictionary_repo = DictionaryRepository(dictionaries_config, dict_service=diction
 search_service = DictionarySearchService(dictionary_repo)
 
 DictName = Enum('DictName', {el.replace('-', '_'): el for el in dictionary_repo.get_all_dict_names()})
+ISO_LANGS = [l.pt1 for l in iter_langs() if l.pt1]
 
 
 class AnnotatedSearchParams(SearchParams):
@@ -35,19 +37,27 @@ class AnnotatedSearchParams(SearchParams):
                  res_lang: Annotated[Set[str], Query(description='Language of the result')] = None
                  ):
         if not d:
-            if not endpoints:
+            if endpoints is None:
                 dicts = set(el.value for el in DictName)
             else:
                 dicts = set()
         else:
             dicts = set(el.value for el in d)
+
+        if endpoints == {''}:
+            endpoints = None
+        if entry_lang == {''}:
+            entry_lang = None
+        if res_lang == {''}:
+            res_lang = None
         super().__init__(dict_info=DictQueryParams(dicts, endpoints),
                          word_info=WordQueryParams(w, entry_lang, res_lang))
 
 
 @app.get("/", response_class=HTMLResponse, include_in_schema=False)
 async def home(request: Request):
-    return templates.TemplateResponse(request=request, name="index.html")
+    dicts = [v.value for v in DictName]
+    return templates.TemplateResponse(request=request, name="main.html", context={'dicts': dicts, 'langs': ISO_LANGS})
 
 
 @app.get("/api/search/")
@@ -57,22 +67,10 @@ async def api_search(search_params: Annotated[AnnotatedSearchParams, Depends(Ann
 
 
 @app.get("/search", response_class=HTMLResponse)
-async def search(request: Request, search_params: Annotated[AnnotatedSearchParams, Depends(AnnotatedSearchParams)]):
+async def search(request: Request,
+                 search_params: Annotated[AnnotatedSearchParams, Depends(AnnotatedSearchParams)]):
     results = await search_service.search(search_params)
-    # TODO: реализовать заполнение шаблонов результатами поиска
-    print(mock_results)
-    # все структуры данных прописаны в datamodels.py
-    # results = [SearchResult]
-    # полезные функции: templates.get_template(template_name) -> returned_template
-    # returned_template.render(*args, **kwargs) - рендерит шаблон - заполняет переменными
-    # чтобы тестироваться, пока не подключена форма: http://127.0.0.1:8000/search?w=anything 
     return templates.TemplateResponse(request=request, name="results2_templ.html", context={'search_results': results})
-
-
-@app.get("/test/search", response_class=HTMLResponse, include_in_schema=False)
-async def search(request: Request):
-    # относительный (от папки templates) путь до твоего шаблона ---v
-    return templates.TemplateResponse(request=request, name="results1.html")
 
 
 @app.get("/api/dict")
