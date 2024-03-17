@@ -66,7 +66,7 @@ async def search(request: Request, search_params: Annotated[AnnotatedSearchParam
     # полезные функции: templates.get_template(template_name) -> returned_template
     # returned_template.render(*args, **kwargs) - рендерит шаблон - заполняет переменными
     # чтобы тестироваться, пока не подключена форма: http://127.0.0.1:8000/search?w=anything 
-    return templates.TemplateResponse(request=request, name="search.html", context={"word": search_params.word_info.word})
+    return templates.TemplateResponse(request=request, name="results2.html", context={})
 
 
 @app.get("/test/search", response_class=HTMLResponse, include_in_schema=False)
