@@ -58,7 +58,7 @@ async def api_search(search_params: Annotated[AnnotatedSearchParams, Depends(Ann
 
 @app.get("/search", response_class=HTMLResponse)
 async def search(request: Request, search_params: Annotated[AnnotatedSearchParams, Depends(AnnotatedSearchParams)]):
-    # results = await search_service.search(search_params)
+    results = await search_service.search(search_params)
     # TODO: реализовать заполнение шаблонов результатами поиска
     print(mock_results)
     # все структуры данных прописаны в datamodels.py
@@ -66,7 +66,7 @@ async def search(request: Request, search_params: Annotated[AnnotatedSearchParam
     # полезные функции: templates.get_template(template_name) -> returned_template
     # returned_template.render(*args, **kwargs) - рендерит шаблон - заполняет переменными
     # чтобы тестироваться, пока не подключена форма: http://127.0.0.1:8000/search?w=anything 
-    return templates.TemplateResponse(request=request, name="results2.html", context={})
+    return templates.TemplateResponse(request=request, name="results2_templ.html", context={'search_results': results})
 
 
 @app.get("/test/search", response_class=HTMLResponse, include_in_schema=False)
