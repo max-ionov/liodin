@@ -10,9 +10,8 @@
               <h1 class="page5-text">Search results</h1>
               {% for dict in search_results %}
               <div class="page5-dict-container">
-                <button class="accordion"><div class="page5-dict-meta"><h1>{{ dict.dict_name }}</h1></div></button>
-                <div class="panel">
-                  <p><div class="page5-search-result">
+                <div class="page5-dict-meta"><h1>{{ dict.dict_name }}</h1></div>
+                <div class="page5-search-result">
                   {% for entry in dict.dict_entries %}
                     {% for lang, transl in entry.translations.items() %}
                       <div class="page5-dict-entry">
@@ -25,9 +24,7 @@
                         </ol>
                       </div>
                     {% endfor %}
-                  {% endfor %}</p>
-                  </div>
-                </div> 
+                  {% endfor %}
                 </div>
               </div>
               {% endfor %}
