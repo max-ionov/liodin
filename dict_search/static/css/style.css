@@ -273,7 +273,7 @@
 
 .bodyLarge {
   font-size: 18px;
-  font-family: Lato;
+  font-family: Inter;
   font-weight: 400;
   line-height: 150%;
 }
@@ -288,25 +288,25 @@
 .heading3 {
   font-size: 20px;
   text-align: center;
-  font-family: Raleway;
+  font-family: Inter;
   font-weight: 600;
   line-height: 150%;
 }
 .bodySmall {
-  font-size: 16px;
-  font-family: Lato;
+  font-size: 18px;
+  font-family: Inter;
   font-weight: 400;
   line-height: 150%;
 }
 .overline {
   font-size: 12px;
-  font-family: Raleway;
+  font-family: Inter;
   font-weight: 700;
   line-height: 150%;
   text-transform: uppercase;
 }
 .Content {
-  font-size: 16px;
+  font-size: 18px;
   font-family: Inter;
   font-weight: 400;
   line-height: 1.15;
@@ -316,20 +316,20 @@
 .heading1 {
   font-size: 48px;
   text-align: center;
-  font-family: Raleway;
+  font-family: Inter;
   font-weight: 700;
   line-height: 150%;
 }
 .logo {
   font-size: 2em;
-  font-family: Lato;
+  font-family: Inter;
   font-weight: 700;
   line-height: 150%;
   text-transform: uppercase;
 }
 .heading2 {
   font-size: 35px;
-  font-family: Raleway;
+  font-family: Inter;
   font-weight: 600;
   line-height: 150%;
 }
