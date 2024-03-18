@@ -35,6 +35,7 @@ class DictionaryService(ABC):
 
 class DictionaryRepository:
     def __init__(self, dictionaries_config: List[DictConfig], dict_service: DictionaryService):
+        self.dict_configs = dictionaries_config
         self.dict_service = dict_service
         self.dictionaries = self.init_dicts_from_config(dictionaries_config)
 

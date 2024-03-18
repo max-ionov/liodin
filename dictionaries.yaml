@@ -4,3 +4,6 @@ dictionaries:
     location: http://sparql.ionov.me/liodin
     available_formats:
       - bilingual
+    about: |
+      Large-scale, machine-readable bilingual dictionaries provided by the Chair for Applied Computational Linguistics (ACoLi) at the University of Augsburg, Germany. As a technical basis, we employ OntoLex-Lemon (https://www.w3.org/2016/05/ontolex/) for data modelling, OLiA (http://purl.org/olia) for representing grammatical information, lexvo (http://lexvo.org) for ISO 639 language identifiers and GlottoLog (http://glottolog.org) for identifiers of non-ISO-639 language varieties.
+      At the moment, we provide OntoLex-lemon and TIAD-TSV editions of open source dictionaries for more than 400 language varieties and more than 2500 language pairs (stable and experimental), with more than 3000 lexical data sets in total, see statistics below.

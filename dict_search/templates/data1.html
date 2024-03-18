@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %} LiODiN - Data {% endblock %}
+{% block styles %}
+  <link href="../static/css/data1.css" rel="stylesheet" />
+{% endblock %}
+{% block content %}
+        <div class="page13-body">
+          <div class="page13-results-container faqContainer">
+            <div class="page13-results">
+              <h1 class="page13-text">Data</h1>
+              {% for dict in dicts %}
+              <div class="page13-dict-container">
+                <h1 class="page13-text01">{{ dict.name }}</h1>
+                <span class="page13-text02">
+                  {{ dict.about }}
+                </span>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+{% endblock %}

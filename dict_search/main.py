@@ -79,9 +79,7 @@ async def api_dict_list():
 
 @app.get("/dict", response_class=HTMLResponse, include_in_schema=False)
 async def dict_list(request: Request):
-    dict_info = dictionary_repo.get_all_dict_names()  # здесь возможно мы захотим доставать еще какую-то метаинформацию, а не только названия
-    # TODO: реализовать заполнение шаблонов информацией о словарях
-    return templates.TemplateResponse(request=request, name='data.html')
+    return templates.TemplateResponse(request=request, name='data1.html', context={'dicts': dictionary_repo.dict_configs})
 
 
 @app.get('/about', response_class=HTMLResponse, include_in_schema=False)
@@ -99,7 +97,7 @@ async def guidelines(request: Request):
     return templates.TemplateResponse(request=request, name='guidelines.html')
 
 
-@app.get("/api/dict/{dict_name}")
+@app.get("/api/dict/{dict_name}", include_in_schema=False)
 async def dict(dict_name: DictName, w: str = None):
     # сделала через query, а не path, потому что тогда были бы проблемы, когда мы ищем слово "search" (пути совпали бы)
     if w:
@@ -108,6 +106,6 @@ async def dict(dict_name: DictName, w: str = None):
         return {"dictionary": dict_name, "dictionary info": "description and wordlist"}
 
 
-@app.get("/api/dict/{dict_name}/search")
+@app.get("/api/dict/{dict_name}/search", include_in_schema=False)
 async def dict_search(dict_name: DictName, w):
     return {"dictionary": dict_name, "word to search": w}

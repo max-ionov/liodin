@@ -21,7 +21,9 @@ class DictConfig:
     name: str
     format_: str
     location: str
+    about: str
     available_formats: Optional[List[str]] = field(default_factory=list)
+
 
 
 @dataclass
