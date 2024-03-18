@@ -107,4 +107,4 @@ class LazySparqlTemplateService(SparqlTemplateService):
     def fill_explanatory_template(self, template: dict, query_params: WordQueryParams) -> str:
         query = asdict(query_params)
         params = {p: v for p, v in query.items() if v}
-        return template['body'].format(filter=template['filters'].format(**params)) # в темплейте будут только слово и дефиниция
+        return template['body'].format(filter=template['filters'].format(**params))
