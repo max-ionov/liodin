@@ -12,6 +12,7 @@
               <div class="page5-dict-container">
                 <div class="page5-dict-meta"><h1>{{ dict.dict_name }}</h1></div>
                 <div class="page5-search-result">
+                  {% if dict.dict_entries %}
                   {% for entry in dict.dict_entries %}
                     {% for lang, transl in entry.translations.items() %}
                       <div class="page5-dict-entry">
@@ -25,6 +26,11 @@
                       </div>
                     {% endfor %}
                   {% endfor %}
+                  {% else %}
+                  <span style="padding-left: var(--dl-space-space-unit); font-style: italic">
+                    Nothing was found or there was an error
+                  </span>
+                  {% endif %}
                 </div>
               </div>
               {% endfor %}
