@@ -81,7 +81,7 @@ class LazySparqlTemplateService(SparqlTemplateService):
             return self.fill_bilingual_template(template, query_params)
         elif template_name == 'explanatory':
             # TODO: (аня) написать заполнение шаблона для запроса к толковому словарю
-            ...
+            return self.fill_explanatory_template(template, query_params)
 
     def get_template(self, template_name: str) -> dict:
         return self.templates[template_name]
@@ -103,3 +103,8 @@ class LazySparqlTemplateService(SparqlTemplateService):
             else:
                 ch = 0
         return template['body'].format(filter=template['filters'][ch].format(**params))
+
+    def fill_explanatory_template(self, template: dict, query_params: WordQueryParams) -> str:
+        query = asdict(query_params)
+        params = {p: v for p, v in query.items() if v}
+        return template['body'].format(filter=template['filters'].format(**params)) # в темплейте будут только слово и дефиниция
