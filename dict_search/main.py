@@ -5,7 +5,7 @@ from fastapi import FastAPI, Request, Depends, Query
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from iso639 import iter_langs, Lang
+from iso639 import iter_langs
 
 from .application.services import DictionaryServiceImpl, DictionarySearchService, LazySparqlTemplateService
 from .application.interfaces import DictionaryRepository
@@ -78,10 +78,10 @@ async def api_dict_list():
 
 
 @app.get("/dict", response_class=HTMLResponse, include_in_schema=False)
-async def dict_list():
+async def dict_list(request: Request):
     dict_info = dictionary_repo.get_all_dict_names()  # здесь возможно мы захотим доставать еще какую-то метаинформацию, а не только названия
     # TODO: реализовать заполнение шаблонов информацией о словарях
-    return
+    return templates.TemplateResponse(request=request, name='data.html')
 
 
 @app.get('/about', response_class=HTMLResponse, include_in_schema=False)
