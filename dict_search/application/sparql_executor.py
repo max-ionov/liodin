@@ -45,9 +45,9 @@ class SPARQLWrapperExecutor(SparqlExecutor):
         df = pd.read_csv(StringIO(str(res, 'utf-8')))
         dict_entries = []
         for i, gr in df.groupby(['word', 'definition']):
-            explanation = gr.definition
-            lexical_entry = LexicalEntry(text=i[0], lang=Lang(i[1]).name)
-            entry = ExplanatoryDictEntry(lexical_entry=lexical_entry, explanation=explanation)
+            for definition in gr.definition.tolist():
+                lexical_entry = LexicalEntry(text=i[0], lang=Lang(i[1]).name)
+                entry = ExplanatoryDictEntry(lexical_entry=lexical_entry, definition=definition)
             dict_entries.append(entry)
         return dict_entries
 
