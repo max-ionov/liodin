@@ -42,7 +42,14 @@ class SPARQLWrapperExecutor(SparqlExecutor):
 
     def _to_explanatory(self, res) -> List[ExplanatoryDictEntry]:
         # TODO: (аня) добавить конвертер в ExplanatoryDictEntry
-        ...
+        df = pd.read_csv(StringIO(str(res, 'utf-8')))
+        dict_entries = []
+        for i, gr in df.groupby(['word', 'definition']):
+            explanation = gr.definition
+            lexical_entry = LexicalEntry(text=i[0], lang=Lang(i[1]).name)
+            entry = ExplanatoryDictEntry(lexical_entry=lexical_entry, explanation=explanation)
+            dict_entries.append(entry)
+        return dict_entries
 
     def format_converter(self, res: bytes, dict_entry_type: str) -> List[DictEntry]:
         if dict_entry_type == 'bilingual':
