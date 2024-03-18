@@ -30,7 +30,7 @@ bilingual:
       }}
     }} LIMIT 100
   filters:
-    - "FILTER(STR(?word) = '{word}')"
-    - "FILTER(?word = '{word}'@{entry_lang})"
-    - "FILTER(STR(?word) = '{word}' && LANG(?transl) = '{result_lang}')"
-    - "FILTER(?word = '{word}'@{entry_lang} && LANG(?transl) = '{result_lang}')"
+    - FILTER(REGEX(STR(?word), "^{word}$"))  # entry only
+    - FILTER(REGEX(STR(?word), "^{word}$") && LANG(?word) = '{entry_lang}')  # entry and its language
+    - FILTER(REGEX(STR(?word), "^{word}$") && LANG(?transl) = '{result_lang}')  # entry and result language
+    - FILTER(REGEX(STR(?word), "^{word}$") && LANG(?word) = '{entry_lang}' && LANG(?transl) = '{result_lang}')  # entry and both languages
