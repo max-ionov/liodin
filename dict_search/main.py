@@ -5,7 +5,7 @@ from fastapi import FastAPI, Request, Depends, Query
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from iso639 import iter_langs
+from iso639 import iter_langs, Lang
 
 from .application.services import DictionaryServiceImpl, DictionarySearchService, LazySparqlTemplateService
 from .application.interfaces import DictionaryRepository
@@ -25,7 +25,8 @@ dictionary_repo = DictionaryRepository(dictionaries_config, dict_service=diction
 search_service = DictionarySearchService(dictionary_repo)
 
 DictName = Enum('DictName', {el.replace('-', '_'): el for el in dictionary_repo.get_all_dict_names()})
-ISO_LANGS = [l.pt1 for l in iter_langs() if l.pt1]
+ISOlangs = Enum('ISOlangs', {l.pt1: l.name for l in iter_langs() if l.pt1})
+ISO_LANGS = [lang.value for lang in ISOlangs]
 
 
 class AnnotatedSearchParams(SearchParams):
@@ -33,8 +34,8 @@ class AnnotatedSearchParams(SearchParams):
                  w: Annotated[str, Query(description='Word or phrase to search in the dictionary')],
                  d: Annotated[Set[DictName], Query(description='Dictionaries to search in')] = None,
                  endpoints: Annotated[Set[str], Query(description='Endpoint to your own RDF dictionary')] = None,
-                 entry_lang: Annotated[Set[str], Query(description='Language of lexical entry in ISO format')] = None,
-                 res_lang: Annotated[Set[str], Query(description='Language of the result')] = None
+                 entry_lang: Annotated[Set[ISOlangs], Query(description='ISO language name of lexical entry')] = None,
+                 res_lang: Annotated[Set[ISOlangs], Query(description='ISO language name of the result')] = None
                  ):
         if not d:
             if endpoints is None:
@@ -43,6 +44,10 @@ class AnnotatedSearchParams(SearchParams):
                 dicts = set()
         else:
             dicts = set(el.value for el in d)
+        if entry_lang:
+            entry_lang = set(lang.name for lang in entry_lang)
+        if res_lang:
+            res_lang = set(lang.name for lang in res_lang)
         super().__init__(dict_info=DictQueryParams(dicts, endpoints),
                          word_info=WordQueryParams(w, entry_lang, res_lang))
 
@@ -56,7 +61,8 @@ async def home(request: Request):
 @app.get("/api/search/")
 async def api_search(search_params: Annotated[AnnotatedSearchParams, Depends(AnnotatedSearchParams)]
                      ) -> List[SearchResult]:
-    return await search_service.search(search_params)
+    results = await search_service.search(search_params)
+    return results
 
 
 @app.get("/search", response_class=HTMLResponse)
