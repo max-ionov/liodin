@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
   <div class="main-search">
-    <form id="searchForm" class="main-form" action="/search" method="get">
+    <form id="searchForm" class="main-form" onsubmit="disableEmptyInputs(this)" action="/search" method="get">
       <div class="main-container1">
         <input type="text"
                name="w"

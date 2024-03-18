@@ -43,13 +43,6 @@ class AnnotatedSearchParams(SearchParams):
                 dicts = set()
         else:
             dicts = set(el.value for el in d)
-
-        if endpoints == {''}:
-            endpoints = None
-        if entry_lang == {''}:
-            entry_lang = None
-        if res_lang == {''}:
-            res_lang = None
         super().__init__(dict_info=DictQueryParams(dicts, endpoints),
                          word_info=WordQueryParams(w, entry_lang, res_lang))
 
