@@ -45,7 +45,7 @@ class TranslationalDictEntry(DictEntry):  # тк наследуется от Dic
 
 class ExplanatoryDictEntry(DictEntry):
     # TODO: (аня) добавить структуру словарной статьи
-    explanation: str # пусть просто строкой определение будет, вроде, там больше нечего указывать
+    definition: List[str] # пусть просто строкой определение будет, вроде, там больше нечего указывать
 
 
 class SearchResult(BaseModel):
