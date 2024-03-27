@@ -173,8 +173,10 @@
   flex-direction: column;
   justify-content: flex-start;
 }
-.page8-text01 {
+.page8-text1 {
   font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
 }
 @media(max-width: 767px) {
   .page8-navbar-interactive {
